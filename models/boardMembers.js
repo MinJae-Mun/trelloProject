@@ -26,7 +26,7 @@ export default class BoardMember extends Model {
                 timestamps: true,
                 underscored: false,
                 modelName: 'BoardMember',
-                tableName: 'boardMembers',
+                tableName: 'board_members',
                 paranoid: true,
                 charset: 'utf8',
                 collate: 'utf8_general_ci',

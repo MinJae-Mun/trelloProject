@@ -35,6 +35,7 @@ nunjucks.configure(path.join(__dirname, 'views'), {
 const { sequelize } = db;
 sequelize
     .sync({ force: false })
+    // sync force true 쓰면 변경된 모델을 자동으로 db에 반영함
     .then(() => {
         console.log('데이터베이스 연결 성공');
     })
@@ -54,6 +55,8 @@ app.use(sessionMiddleware);
 
 // api 라우터
 app.use('/api', [AuthRouter]);
+
+// app.use('/api', [CardRouter]);
 
 // 에러 핸들링 미들웨어
 app.use(errorMiddleware);
