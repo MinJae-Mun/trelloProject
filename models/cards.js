@@ -23,6 +23,14 @@ export default class Card extends Model {
                     type: DataTypes.STRING(255),
                     allowNull: false,
                 },
+                previousCardId: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true,
+                },
+                nextCardId: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true,
+                },
             },
             {
                 // 테이블에 추가적인 설정
