@@ -1,19 +1,20 @@
 import { Router } from 'express';
-import { ListsController } from '../controllers/list.controller';
+import { ListsController } from '../controllers/list.controller.js';
 
+const listsController = new ListsController();
 
-const listRouter = Router();
+const listsRouter = Router();
 
 //생성
-listRouter.post('/:boardId/lists', ListsController.createList);
+listsRouter.post('/:boardId', listsController.createList);
 
 // 조회
-listRouter.get('/:boardId/lists', ListsController.getMyLists);
+listsRouter.get('/:boardId', listsController.getAllLists);
 
 //수정 
-listRouter.put('/:boardId/:listId', ListsController.updateList);
+listsRouter.put('/:boardId/:listId', listsController.updateListName);
 
 //삭제 
-listRouter.delete('/:boardId/:listId', ListsController.deleteList);
+listsRouter.delete('/:boardId/:listId', listsController.deleteList);
 
-export { listRouter };
+export { listsRouter };

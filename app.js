@@ -11,6 +11,7 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
+import { apiRouter } from './src/routers/index.js';
 
 // 환경변수 세팅
 dotenv.config();
@@ -53,10 +54,13 @@ app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 
+app.use('/api', apiRouter);
+
 // api 라우터
 app.use('/api', [AuthRouter]);
 
 // app.use('/api', [CardRouter]);
+
 
 // 에러 핸들링 미들웨어
 app.use(errorMiddleware);

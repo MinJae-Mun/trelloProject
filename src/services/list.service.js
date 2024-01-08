@@ -1,15 +1,25 @@
-import { ListsRepository } from "../repositories/pets.repository.js"
+import { ListsRepository } from "../repositories/list.repository.js"
 
 
 export class ListsService {
     petsRepository = new ListsRepository();
 
     // 리스트 생성
-    static async createList(boardId) {
-        return ListsRepository.createList(boardId);
-      }
+    createList = async (boardId, listName) => {
+      const newList = await this.ListsRepository.createList(
+        boardId, 
+        listName,
+        );
+        return {
+          listName: newList.listName,
+          createdAt: newList.createdAt,
+          updatedAt: newList.updatedAt,
+          deletedAt: newList.deletedAt,
+        };
+      };
     
-      static async getAllLists() {
+      // 리스트 조회
+      getAllLists = async () => {
         return ListsRepository.getAllLists();
       }
     

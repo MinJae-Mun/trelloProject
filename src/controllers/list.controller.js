@@ -4,10 +4,17 @@ export class ListsController {
 
   // 리스트 생성
   createList = async (req, res) => {
-    const { boardId } = req.body;
+    const { boardId } = req.params;
+    const { listName } = req.body;
     try {
-      const newList = await ListService.createList(boardId);
-      res.status(201).json(newList);
+      if (!boardId) res.status(404).json({ message: '존재하지 않는 보드입니다.' });
+
+      const newList = await this.ListsService.createList(boardId, listName);
+
+      return res.status(201).json({
+        message: '리스트가 생성 되었습니다.',
+        newList
+      });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -16,7 +23,7 @@ export class ListsController {
   // 리스트 조회
   getAllLists = async (req, res) => {
     try {
-      const allLists = await ListService.getAllLists();
+      const allLists = await this.ListsService.getAllLists();
       res.status(200).json(allLists);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -63,7 +70,7 @@ export class ListsController {
   deleteList = async (req, res) => {
     const { listId } = req.params;
     try {
-      const deletedList = await ListService.deleteList(listId);
+      const deletedList = await this.ListsService.deleteList(listId);
       if (deletedList) {
         res.status(200).json({ message: 'List deleted successfully' });
       } else {

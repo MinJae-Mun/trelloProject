@@ -3,8 +3,15 @@ import { db } from '../../models/index.js';
 const { List } = db;
 export class ListsRepository {
     // 리스트 생성
-    static async createList(boardId) {
-        return db.List.create({ boardId });
+    createList = async (boardId, listName) => {
+      const newList = await this.db.List.create({
+        newList: {
+          boardId: +boardId,
+          listName,
+        },
+      });
+
+      return newList; 
       }
     
       static async getAllLists() {
