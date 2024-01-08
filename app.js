@@ -57,7 +57,7 @@ app.use(sessionMiddleware);
 // api 라우터
 app.use('/api', [AuthRouter]);
 
-// app.use('/api', [CardRouter]);
+app.use('/api', [CardRouter]);
 
 // 에러 핸들링 미들웨어
 app.use(errorMiddleware);

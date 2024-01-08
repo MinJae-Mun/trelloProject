@@ -9,17 +9,27 @@ const cardController = new CardController();
  * 카드 수정
  * 카드 삭제 */
 
-//리스트에 표시 될 카드 목록 조회
-router.get('/card', authMiddleware, cardController.findAllCard);
+//카드 상세 조회
+router.get('/card/:cardId', authMiddleware, cardController.findCardDetail);
 
-//리스트에 표시 된 카드 상세 조회
-router.get('/card/:cardId', authMiddleware, cardController.findCardById);
+//카드 액티비티 조회
+router.get(
+    '/card/:activity',
+    authMiddleware,
+    cardController.findActivityByCard,
+);
+
+//카드 액티비티에 comment 조회
+router.get('card/comment', authMiddleware, controller.getCommentByCard);
 
 //카드 생성
 router.post('/card', authMiddleware, cardController.createCard);
 
 //카드 수정
 router.put('/card/:cardId', authMiddleware, cardController.updateCard);
+
+//카드 이동
+router.patch('/card/:cardId', authMiddleware, cardController.moveCard);
 
 //카드 삭제
 router.delete('/card/:cardId', authMiddleware, cardController.deleteCard);
