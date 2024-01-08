@@ -38,8 +38,8 @@ sequelize
     .then(() => {
         console.log('데이터베이스 연결 성공');
     })
-    .catch(() => {
-        console.log('데이터베이스 연결 실패');
+    .catch((error) => {
+        console.log('데이터베이스 연결 실패', error);
     });
 
 app.use(morgan('dev'));
