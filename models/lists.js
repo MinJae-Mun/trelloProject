@@ -15,6 +15,18 @@ export default class List extends Model {
                     type: DataTypes.INTEGER,
                     allowNull: false,
                 },
+                listName: {
+                    type: DataTypes.STRING(255),
+                    allowNull: false,
+                },
+                previousListId: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true,
+                },
+                nextListId: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true,
+                },
             },
             {
                 // 테이블에 추가적인 설정
