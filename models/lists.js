@@ -19,13 +19,9 @@ export default class List extends Model {
                     type: DataTypes.STRING(255),
                     allowNull: false,
                 },
-                previousListId: {
-                    type: DataTypes.INTEGER,
-                    allowNull: true,
-                },
-                nextListId: {
-                    type: DataTypes.INTEGER,
-                    allowNull: true,
+                listOrder: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
                 },
             },
             {

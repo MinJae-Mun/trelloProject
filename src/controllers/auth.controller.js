@@ -9,7 +9,7 @@ export class AuthController {
             const createAuthData = req.body;
 
             const isValidData =
-                'userId' in createAuthData &&
+                'email' in createAuthData &&
                 'password' in createAuthData &&
                 'checkPassword' in createAuthData &&
                 'name' in createAuthData;
@@ -34,7 +34,7 @@ export class AuthController {
             const signinData = req.body;
 
             const isValidData =
-                'userId' in signinData && 'password' in signinData;
+                'email' in signinData && 'password' in signinData;
 
             if (!isValidData) {
                 const error = new Error('유효하지 않은 데이터입니다.');
