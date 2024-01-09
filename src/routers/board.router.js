@@ -1,8 +1,13 @@
 import express from 'express';
-import { BoardController } from '../controllers/boardController';
 
-const boardRouter = express.Router();
+const router = express.Router();
+const BoardController = require('../1controllers/board_controller');
+const boardController = new BoardController();
 
-boardRouter.get('/:id', protectedMiddleware, BoardController);
+router.post('/boards', boardController.createBoard);
+router.get('/boards', boardController.getBoard);
+router.get('/boards/:boardId', boardController.getOneBoard);
+router.put('/boards/:boardId', boardController.updateBoard);
+router.delete('/boards/:boardId', boardController.deleteBoard);
 
-export default boardRouter;
+module.exports = router;
