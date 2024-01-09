@@ -7,6 +7,7 @@ export class ListsRepository {
     const newList = await db.List.create({
       boardId: +boardId,
       listName,
+      listOrder: +boardId,
     },
     );
 
@@ -17,7 +18,7 @@ export class ListsRepository {
   getAllLists = async () => {
     const allLists = await db.List.findAll({
       attributes: ['listName'],
-      order: [['createAt', 'DESC']]
+      order: [['listOrder','DESC']] // listOrder로 
     });
     return allLists;
   }
@@ -37,16 +38,16 @@ export class ListsRepository {
     });
 
     return list;
-  }
+  };
 
   // 리스트 수정
   updateListName = async (listId, listName) => {
     const list = await db.List.update({
-      data: {
-        listName
-      },
       where: {
         listId: +listId,
+      },
+      data: {
+        listName,
       },
     });
 

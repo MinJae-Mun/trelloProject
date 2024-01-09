@@ -57,6 +57,7 @@ export class ListsService {
     return {
       listId: list.listId,
       listName: list.listName,
+      listOrder: list.listOrder,
     }
   }
 
