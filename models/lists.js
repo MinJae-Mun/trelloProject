@@ -15,6 +15,14 @@ export default class List extends Model {
                     type: DataTypes.INTEGER,
                     allowNull: false,
                 },
+                listName: {
+                    type: DataTypes.STRING(255),
+                    allowNull: false,
+                },
+                listOrder: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                },
             },
             {
                 // 테이블에 추가적인 설정

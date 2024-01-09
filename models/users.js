@@ -42,7 +42,7 @@ export default class User extends Model {
     // 해당 모델의 관계를 정의하는 정적 메서드
     static associate(db) {
         db.User.hasMany(db.BoardMember, {
-            as: 'boardMambers',
+            as: 'board_members',
             foreignKey: 'userId',
             sourceKey: 'userId',
         });

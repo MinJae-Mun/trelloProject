@@ -24,7 +24,7 @@ export default class Card extends Model {
                     allowNull: false,
                 },
                 cardOrder: {
-                    type: DataTypes.INTEGER,
+                    type: DataTypes.FLOAT,
                     allowNull: false,
                 },
             },
