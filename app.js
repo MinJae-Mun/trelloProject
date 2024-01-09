@@ -10,7 +10,6 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
 import { apiRouter } from './src/routers/index.js';
-import { UsersRouter } from './src/routers/user.router.js';
 
 // 환경변수 세팅
 dotenv.config();
@@ -56,7 +55,7 @@ app.use(sessionMiddleware);
 app.use('/api', apiRouter);
 
 // api 라우터
-app.use('/api', [AuthRouter, UsersRouter]);
+app.use('/api', [AuthRouter]);
 
 // app.use('/api', [CardRouter]);
 
