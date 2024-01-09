@@ -97,7 +97,7 @@ export class CardController {
             } = req.body;
 
             //코멘트 수정도 여기서 일단 해볼게요
-            if (!comment && ) {
+            if (!comment) {
                 return res.status(400).json({
                     ok: false,
                     message: '한가지 이상은 변경해야 합니다',

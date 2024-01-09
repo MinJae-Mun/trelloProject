@@ -1,12 +1,10 @@
 import express from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import nunjucks from 'nunjucks';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { sessionMiddleware } from './middlewares/sessionMiddleware.js';
-import { routerMiddleware } from './middlewares/routerMiddleware.js';
 import { errorMiddleware } from './middlewares/errorMiddleware.js';
 
 import { db } from './models/index.js';

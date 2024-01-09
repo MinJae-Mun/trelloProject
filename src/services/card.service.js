@@ -3,56 +3,41 @@ import { CardRepository } from '../repositories/card.repository.js';
 export class CardService {
     cardRepository = new CardRepository();
 
-    //카드 상세 조회
-    findCardDetail = async () => {
-        
-            const card = await this.cardService.findCardDetail();
+    // //카드 상세 조회
+    // findCardDetail = async () => {
 
-            if(!card){
-                return false;
-            }
+    //         const card = await this.cardService.findCardDetail();
 
-            card.sort((a,b)=> {
-                return b.createAt-a.createAt;
-            })
-            return card.map(()).json({ data: card });
-        }
-    };
+    //         if(!card){
+    //             return false;
+    //         }
+
+    //         card.sort((a,b)=> {
+    //             return b.createAt-a.createAt;
+    //         })
+    //         return card.map(( )).json({ data: card });
+    //     }
+    // };
 
     //카드 액티비티 조회
-    findActivityByCard = async () => {
-
-    };
-
+    findActivityByCard = async () => {};
 
     //카드 액티비티에 comment 조회
-    getCommentByCard = async () => {
-
-    };
-
+    getCommentByCard = async () => {};
 
     //카드 생성
     //타이틀 써야 생성 가능
-    createCard = async () => {
-
-    };
-
+    createCard = async () => {};
 
     //카드 수정 & 카드 상세
-    updateCard = async () => {
-
-    };
-
+    updateCard = async () => {};
 
     //카드 이동
-    moveCard = async () => {
-
-    };
+    moveCard = async () => {};
 
     //카드 삭제
-    deleteCard = async () => {
-
-    };
+    deleteCard = async () => {};
+}
 
 // 카드 수정
 //     * 카드 이름
