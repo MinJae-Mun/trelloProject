@@ -6,7 +6,6 @@ export class ListsService {
 
   // 리스트 생성
   createList = async (boardId, listName) => { 
-    console.log('리스트 서비스 보드아이디, 리스트네임', boardId, listName)
     const newList = await this.listsRepository.createList(
       boardId,
       listName,

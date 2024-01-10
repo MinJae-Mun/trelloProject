@@ -1,36 +1,48 @@
+import Card from '../../models/cards.js';
 import { CardRepository } from '../repositories/card.repository.js';
 
 export class CardService {
     cardRepository = new CardRepository();
 
-    // //카드 상세 조회
-    // findCardDetail = async () => {
+    //카드 상세 조회
+    findCardDetail = async (cardId) => {
+        try {
+            // 레포지토리에서 특정 카드의 상세 정보를 가져옵니다.
+            const card = await this.cardRepository.findCardDetail(cardId);
 
-    //         const card = await this.cardService.findCardDetail();
+            if (!card) throw new Error(' 카드가 없어요 ');
 
-    //         if(!card){
-    //             return false;
-    //         }
+            return {
+                id: card.id,
+                // title,description 이 null이면 빈 값 할당
+                title: card.title || '',
+                description: card.description || '',
+                comments: card.comments,
+            };
+        } catch (err) {
+            console.error(err);
+            throw new Error(
+                '카드 세부 정보를 검색하는 동안 오류가 발생했습니다.',
+            );
+        }
+    };
 
-    //         card.sort((a,b)=> {
-    //             return b.createAt-a.createAt;
-    //         })
-    //         return card.map(( )).json({ data: card });
-    //     }
-    // };
+    //카드 생성(타이틀만 입력하면 생성)
+    createCard = async (bmId, boardId, listId, title) => {
+        const createCard = await Card.create({
+            bmId,
+            boardId,
+            listId,
+            title,
+            roleId: null, //작업자 아이디 null 값으로 생성
+        });
+        return createCard;
+    };
 
-    //카드 액티비티 조회
-    findActivityByCard = async () => {};
-
-    //카드 액티비티에 comment 조회
-    getCommentByCard = async () => {};
-
-    //카드 생성
-    //타이틀 써야 생성 가능
-    createCard = async () => {};
-
-    //카드 수정 & 카드 상세
-    updateCard = async () => {};
+    //카드 수정 & 카드 상세 => 작업자 할당, 작업자 변경
+    updateCard = async (cardId, updateFields) => {
+        await Card.update(updateFields, { where: { id: cardId } });
+    };
 
     //카드 이동
     moveCard = async () => {};
@@ -43,5 +55,3 @@ export class CardService {
 //     * 카드 이름
 //     * 카드 설명
 //     * 카드 색상
-//     * 작업자 할당????????
-//     * 작업자 변경????????

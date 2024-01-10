@@ -1,103 +1,79 @@
 import { db } from '../../models/index.js';
 import { Sequelize } from 'sequelize';
-import List from '../../models/lists.js';
 //https://blog.jh8459.com/2022-02-15-TIL/
 const op = Sequelize.Op;
 
 const { Card, Comment } = db;
 
 export class CardRepository {
-    // constructor(card) {
-    //     // 클래스의 인스턴스가 생성 될 때 외부에서 card 받을 수 있게 해줌
-    //     this.card = card; // card 매개변수를 클래스의 속성으로 설정함
-    // }
-
     //카드 상세 조회
-    //title, description null 로 추가, 코멘트 값 null로 추가, 작업자 변경 가능,
+    //title, description null 로 추가, 코멘트 값 null로 추가, 현재 작업자 조회
     findCardDetail = async () => {
         try {
             const cardId = req.params.cardId;
 
             const card = await Card.findOne({
                 where: { id: cardId },
-                include: [{ model: List }, { model: Comment, as: 'comments' }],
-            }); // 코멘츠는 카드 모델에서 코멘트 모델 가져오는 관계 이름임
+                attributes: ['title', 'description'],
+                include: [{ model: Comment, as: 'comments', required: false }],
+            }); //as:코멘츠 관계 별칭 /required: false 코멘트 없어도 결과 나오게
+            //필요시 코멘트 attributes: ['description'] 추가?
+            return card;
+        } catch (err) {
+            throw err;
+        }
+    };
 
-            if (!card) {
-                return res
-                    .status(404)
-                    .json({ message: '카드를 찾을 수 없어유' });
-            }
+    //카드 생성 (생성할 때는 타이틀만..)
+    createCard = async (bmId, boardId, listId, title) => {
+        const createCard = await Card.create({ bmId, boardId, listId, title });
+        return createCard;
+    };
+
+    //카드 수정 & 카드 상세
+    updateCard = async (cardId, updateFields, roleId = null) => {
+        // 업데이트할 데이터 객체를 생성합니다.
+        const updateData = { ...updateFields };
+        if (roleId !== null) {
+            updateData.roleId = roleId; // 작업자 할당 또는 변경
+        }
+
+        // Card 모델을 사용하여 카드 정보를 업데이트합니다.
+        const [updateCount] = await Card.update(updateData, {
+            where: { id: cardId },
+        });
+
+        // 업데이트된 카드의 수를 확인합니다.
+        if (updateCount === 0) {
+            throw new Error('카드를 업데이트할 수 없습니다.');
+        }
+
+        // 업데이트된 카드 정보를 다시 조회합니다.
+        const updatedCard = await this.findCardDetail(cardId);
+        return updatedCard;
+    };
+
+    //카드 이동
+    moveCard = async (req, res, next) => {
+        try {
+            const card = await this.cardService.moveCard();
             return res.status(200).json({ data: card });
         } catch (err) {
             next(err);
         }
     };
 
-    //     //카드 액티비티 조회
-    //     findActivityByCard = async (req, res, next) => {
-    //         try {
-    //             const card = await this.cardService.findActivityByCard();
-    //             return res.status(200).json({ data: card });
-    //         } catch (err) {
-    //             next(err);
-    //         }
-    //     };
-
-    //     //카드 액티비티에 comment 조회
-    //     getCommentByCard = async (req, res, next) => {
-    //         try {
-    //             const card = await this.cardService.getCommentByCard();
-    //             return res.status(200).json({ data: card });
-    //         } catch (err) {
-    //             next(err);
-    //         }
-    //     };
-
-    //     //카드 생성 (생성할 때는 타이틀만..)
-    //     createCard = async ({ userId, listId, title }) => {
-    //         const data = await card.create({ userId, listId, title });
-    //         return data;
-    //     };
-
-    //     //카드 수정 & 카드 상세
-    //     updateCard = async ({ id, userId, listId, title, description }) => {
-    //         const data = await card.create(
-    //             {
-    //                 id,
-    //                 userId,
-    //                 listId,
-    //                 title,
-    //                 description,
-    //             },
-    //             { where: { id: id } },
-    //         );
-    //     };
-
-    //     //카드 이동
-    //     moveCard = async (req, res, next) => {
-    //         try {
-    //             const card = await this.cardService.moveCard();
-    //             return res.status(200).json({ data: card });
-    //         } catch (err) {
-    //             next(err);
-    //         }
-    //     };
-
-    //     //카드 삭제
-    //     deleteCard = async (req, res, next) => {
-    //         try {
-    //             const card = await this.cardService.deleteCard();
-    //             return res.status(200).json({ data: card });
-    //         } catch (err) {
-    //             next(err);
-    //         }
-    //     };
-    // }
+    //카드 삭제
+    deleteCard = async (req, res, next) => {
+        try {
+            const card = await this.cardService.deleteCard();
+            return res.status(200).json({ data: card });
+        } catch (err) {
+            next(err);
+        }
+    };
 }
 // 카드 수정
 //     * 카드 이름
 //     * 카드 설명
 //     * 카드 색상
-//     * 작업자 할당????????
-//     * 작업자 변경????????

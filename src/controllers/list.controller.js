@@ -1,13 +1,13 @@
 import { ListsService } from "../services/list.service.js";
+import { errorMiddleware } from "../../middlewares/errorMiddleware.js";
 export class ListsController {
   listsService = new ListsService();
 
   // 리스트 생성
   createList = async (req, res) => {
-     const { boardId } = req.params;
+    const { boardId } = req.params;
     const { listName } = req.body;
     try {
-      console.log('보드 아이디 확인: ',boardId)
       if (!boardId) res.status(404).json({ message: '존재하지 않는 보드입니다.' });
 
       const newList = await this.listsService.createList(boardId, listName);
