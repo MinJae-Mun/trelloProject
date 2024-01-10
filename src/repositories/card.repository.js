@@ -9,7 +9,7 @@ export class CardRepository {
     //cardId 값 찾기 id가 존재하는지 확인하려고 사용. 어트리뷰트에 Id 값들 다 추가해야 하나요...
     findCardById = async (cardId) => {
         const card = await db.Card.findOne({
-            attributes: ['boardId', 'listId', 'cardId'],
+            attributes: ['listId', 'cardId'], // 낙: 여기에 boardId가 들어있었어요, 카드테이블에는 boardId가 없는데 추가 하면 오류가 나요
             where: {
                 cardId: +cardId,
             },
@@ -22,7 +22,7 @@ export class CardRepository {
     findCardDetail = async (cardId) => {
         try {
             const card = await Card.findOne({
-                where: { id: cardId },
+                where: { cardId }, // 낙: 이렇게 잘못 되어있었어요 {id: cardId}
                 attributes: ['title', 'description'],
                 include: [{ model: Comment, as: 'comments', required: false }],
             }); //as:코멘츠 관계 별칭 /required: false 코멘트 없어도 결과 나오게 필요시 코멘트 어트리뷰트 추가
@@ -33,7 +33,7 @@ export class CardRepository {
     };
 
     //카드 생성 (생성할 때는 타이틀만..)
-    createCard = async (listId, title) => {
+    createCard = async ({listId, title}) => {
         let num = 5;
         const existingCards = await Card.findAll({
             where: { listId },
@@ -53,7 +53,7 @@ export class CardRepository {
     //카드 수정
     updateCard = async (cardId, updateData) => {
         const [updateCount] = await Card.update(updateData, {
-            where: { id: cardId },
+            where: { cardId }, // 낙 : {id: carId} 라고 되어있어서 오류나요
         });
 
         if (updateCount === 0) {
@@ -72,7 +72,7 @@ export class CardRepository {
     //카드 삭제
     deleteCard = async (cardId) => {
         const deleteCount = await Card.destroy({
-            where: { id: cardId },
+            where: { cardId }, // 낙 : { id: cardId } 이렇게 되어있어서 오류가 나요
         });
 
         if (deleteCount === 0) {
