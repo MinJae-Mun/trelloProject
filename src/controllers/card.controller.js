@@ -7,11 +7,36 @@ export class CardController {
     findCardDetail = async (req, res, next) => {
         try {
             const { cardId } = req.params;
+            const userId = req.user.id;
 
+            // 먼저 해당 카드가 있는지 확인
             const card = await this.cardService.findCardDetail(cardId);
+            if (!card) {
+                return res
+                    .status(404)
+                    .json({ message: '카드를 찾을 수 없습니다.' });
+            }
+            // 보드 멤버 여부 확인
+            // const isBoardMember = await this.boardService.isMember(
+            //     userId,
+            //     card.bmId,
+            // );
+            // if (!isBoardMember) {
+            //     return res
+            //         .status(403)
+            //         .json({ message: '보드 멤버가 아닙니다.' });
+            // }
+
+            // // 카드가 속한 리스트와 보드가 사용자와 관련이 있는지 확인
+            // if (card.boardId !== BoardId || card.listId !== ListId) {
+            //     return res
+            //         .status(403)
+            //         .json({ message: '접근 권한이 없습니다.' });
+            // }
 
             return res.status(200).json({ data: card });
         } catch (err) {
+            // 에러 처리 로직
             next(err);
         }
     };
@@ -19,20 +44,9 @@ export class CardController {
     //카드 생성
     createCard = async (req, res, next) => {
         try {
-            const { bmId, boardId, listId, title } = req.body;
+            const { listId } = req.params;
+            const { title } = req.body;
 
-            if (!bmId) {
-                return res.status(400).json({
-                    ok: false,
-                    message: '보드 멤버여야 함',
-                });
-            }
-            if (!boardId) {
-                return res.status(400).json({
-                    ok: false,
-                    message: '보드 안에 있어야함',
-                });
-            }
             if (!listId) {
                 return res.status(400).json({
                     ok: false,
@@ -47,8 +61,6 @@ export class CardController {
             }
 
             const createdCard = await this.cardService.createCard(
-                bmId,
-                boardId,
                 listId,
                 title,
             );
@@ -62,31 +74,30 @@ export class CardController {
         }
     };
 
-    /** 카드 수정
-     * title 수정,
-     * description 값 수정,
-     * 코멘트 값 수정,
-     * 작업자 할당, 작업자 변경 가능
-     * */
-
-    //  작업자 할당: 특정 사용자를 카드의 작업자로 할당합니다.
-    //  할당된 작업자 변경: 이미 할당된 작업자를 다른 사용자로 변경합니다.
     updateCard = async (req, res, next) => {
         try {
-            const { bmId, boardId, listId, cardId, title, description } =
-                req.body;
+            const { cardId } = req.params;
+            const { title, description, role } = req.body;
 
-            if (!title) {
+            //양 끝 공백들 제거하는 메서드, 여러개의 공백만 있는 문자열 입력하는 것 막아줌
+            if (title == null || title.trim() === '') {
                 return res.status(400).json({
                     ok: false,
-                    message: '한가지 이상은 변경해야 합니다',
+                    message: '타이틀만은 뭐라도 공백 제외 입력 필수',
                 });
             }
+            // 서비스 계층의 updateCard 함수를 호출합니다.
+            const updatedCard = await this.cardService.updateCard(
+                cardId,
+                title,
+                description,
+                role,
+            );
 
-            const card = await this.cardService.createCard(title, description);
-            return res.status(200).json({ data: card });
+            // 업데이트된 카드 정보를 반환합니다.
+            return res.status(200).json({ data: updatedCard });
         } catch (err) {
-            next(err);
+            next(err); // 에러 핸들링을 위한 next 호출
         }
     };
 
@@ -102,18 +113,21 @@ export class CardController {
 
     //카드 삭제
     deleteCard = async (req, res, next) => {
+        const { cardId } = req.params;
         try {
-            const card = await this.cardService.deleteCard();
-            return res.status(200).json({ data: card });
-        } catch (err) {
-            next(err);
+            if (!cardId)
+                res.status(404).json({
+                    message: '카드가 존재하지 않습니다.',
+                });
+
+            const deletedCard = await this.cardService.deleteCard(cardId);
+
+            res.status(200).json({
+                message: '카드 삭제 성공',
+                data: deletedCard,
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
     };
 }
-// 카드 생성
-//     * 컬럼 내부에 카드를 생성할 수 있어야 합니다.
-
-// 카드 수정
-//     * 카드 이름
-//     * 카드 설명
-//     * 카드 색상

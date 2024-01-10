@@ -1,4 +1,3 @@
-import Card from '../../models/cards.js';
 import { CardRepository } from '../repositories/card.repository.js';
 
 export class CardService {
@@ -28,30 +27,50 @@ export class CardService {
     };
 
     //카드 생성(타이틀만 입력하면 생성)
-    createCard = async (bmId, boardId, listId, title) => {
-        const createCard = await Card.create({
-            bmId,
-            boardId,
+    createCard = async (listId, title, description = null, role = null) => {
+        const createCard = await this.cardRepository.createCard({
             listId,
             title,
-            roleId: null, //작업자 아이디 null 값으로 생성
+            description,
+            role,
         });
         return createCard;
     };
 
-    //카드 수정 & 카드 상세 => 작업자 할당, 작업자 변경
-    updateCard = async (cardId, updateFields) => {
-        await Card.update(updateFields, { where: { id: cardId } });
+    //카드 수정
+    updateCard = async (cardId, title, description, role) => {
+        const card = await this.cardRepository.findCardById(cardId);
+
+        if (!card) throw new Error('리스트가 존재하지 않습니다.');
+
+        // description과 role은 선택이기 때문에, undefined인 경우 null로 처리
+        const updateData = {
+            title,
+            description: description !== undefined ? description : null,
+            role: role !== undefined ? role : null,
+        };
+        //const updatedCard = 이거 안 넣고 리턴 안보내고 하는 경우도 있음 테스트 해보기
+        const updatedCard = await this.cardRepository.updateCard(
+            cardId,
+            updateData,
+        );
+        return updatedCard;
     };
 
     //카드 이동
-    moveCard = async () => {};
+    moveCard = async (boardId, listId, prev, next) => {
+const 
 
-    //카드 삭제
-    deleteCard = async () => {};
+    };
+
+    // 카드 삭제
+    deleteCard = async (cardId) => {
+        const card = await this.cardsRepository.findCardById(cardId);
+
+        if (!card) throw new Error('카드가 존재하지 않습니다.');
+
+        await this.cardRepository.deleteCard(cardId);
+
+        return { deletedCardId: cardId };
+    };
 }
-
-// 카드 수정
-//     * 카드 이름
-//     * 카드 설명
-//     * 카드 색상
