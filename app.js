@@ -9,13 +9,10 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
-<<<<<<< HEAD
 import { UserRouter } from './src/routers/user.router.js';
 import { CommentRouter } from './src/routers/comment.router.js';
-=======
 // import { UsersRouter } from './src/routers/user.router.js';
 import { BoardRouter } from './src/routers/board.router.js';
->>>>>>> a74081a61216b97ae8d378b2ff5aba1889e10e5b
 import { apiRouter } from './src/routers/index.js';
 
 // 환경변수 세팅
@@ -61,11 +58,7 @@ app.use(sessionMiddleware);
 app.use('/api', apiRouter);
 
 // api 라우터
-<<<<<<< HEAD
-app.use('/api', [AuthRouter, UserRouter, CommentRouter]);
-=======
-app.use('/api', [AuthRouter, BoardRouter]);
->>>>>>> a74081a61216b97ae8d378b2ff5aba1889e10e5b
+app.use('/api', [AuthRouter, UserRouter, CommentRouter, BoardRouter]);
 
 // app.use('/api', [CardRouter]);
 
