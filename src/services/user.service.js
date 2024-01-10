@@ -3,8 +3,8 @@ import { UsersRepository } from '../repositories/user.repository.js';
 export class UserService {
     userRepository = new UsersRepository();
 
-    getUserById = async (userId) => {
-        const user = await this.userRepository.readOneByUserId(userId);
+    getUserById = async (email) => {
+        const user = await this.userRepository.readOneByUserId(email);
 
         return {
             ok: true,
@@ -13,11 +13,11 @@ export class UserService {
         };
     };
 
-    updateUserById = async (userId, body) => {
-        return await this.usersRepository.updateOneById(userId, body);
+    updateUserById = async (email, body) => {
+        return await this.usersRepository.updateOneById(email, body);
     };
 
-    deleteUserById = async (userId) => {
-        return await this.usersRepository.deleteOneById(userId);
+    deleteUserById = async (email) => {
+        return await this.usersRepository.deleteOneById(email);
     };
 }

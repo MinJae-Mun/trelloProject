@@ -3,8 +3,22 @@ import { db } from '../../models/index.js';
 const { User } = db;
 
 export class UsersRepository {
-    updateOneById = async (userId, data) => {
-        const user = await this.readOneById(userId);
+    readOneById = async (email) => {
+        const user = await db.User.findOne({
+            where: {
+                email,
+            },
+            include: [
+                {
+                    model: db.BoardMember,
+                },
+            ],
+        });
+        return user;
+    };
+
+    updateOneById = async (email, data) => {
+        const user = await this.readOneById(email);
 
         const result = await User.update(
             {
@@ -12,7 +26,7 @@ export class UsersRepository {
             },
             {
                 where: {
-                    userId,
+                    email,
                 },
             },
         );
@@ -20,10 +34,10 @@ export class UsersRepository {
         return result;
     };
 
-    deleteOneById = async (userId) => {
+    deleteOneById = async (email) => {
         const result = await db.User.destroy({
             where: {
-                userId,
+                email,
             },
         });
 

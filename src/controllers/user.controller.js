@@ -6,9 +6,9 @@ export class UsersController {
     //유저정보조회
     readMyInfo = async (req, res, next) => {
         try {
-            const userId = req.user.userId;
+            const email = req.user.email;
 
-            const result = await this.userService.getUserById(userId);
+            const result = await this.userService.getUserById(email);
 
             return res.status(200).json(result);
         } catch (err) {
@@ -20,8 +20,8 @@ export class UsersController {
     //유저정보수정
     updateUserInfo = async (req, res, next) => {
         try {
-            // session에서 userId를 받아와야 함
-            const id = req.user.userId;
+            // session에서 email를 받아와야 함
+            const id = req.user.email;
             //요청한 바디정보
             const body = req.body;
             //유정정보 업데이트하기
@@ -39,8 +39,8 @@ export class UsersController {
     //유저삭제
     deleteMyId = async (req, res, next) => {
         try {
-            // session에서 userId를 받아와야 함
-            const id = req.user.userId;
+            // session에서 email를 받아와야 함
+            const id = req.user.email;
             await this.usersService.deleteUserById(id);
 
             return res.status(200).json({
