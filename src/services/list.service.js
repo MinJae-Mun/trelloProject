@@ -5,7 +5,7 @@ export class ListsService {
   listsRepository = new ListsRepository();
 
   // 리스트 생성
-  createList = async (boardId, listName) => { 
+  createList = async (boardId, listName) => {
     const newList = await this.listsRepository.createList(
       boardId,
       listName,
@@ -19,8 +19,8 @@ export class ListsService {
   };
 
   // 리스트 조회
-  getAllLists = async () => {
-    const allLists = await this.listsRepository.getAllLists();
+  getAllLists = async (boardId) => {
+    const allLists = await this.listsRepository.getAllLists(boardId);
 
     return allLists;
   }
@@ -33,7 +33,7 @@ export class ListsService {
   updateListName = async (listId, listName) => {
     const list = await this.listsRepository.findListById(listId);
 
-    if (!list) throw new Error( '리스트가 존재하지 않습니다.');
+    if (!list) throw new Error('리스트가 존재하지 않습니다.');
 
     await this.listsRepository.updateListName(listId, listName);
 
@@ -43,6 +43,41 @@ export class ListsService {
       listId: updatedList.listId,
       listName: updatedList.listName,
     };
+  }
+
+  // 리스트 이동
+  moveList = async (boardId, listId, prevListId, nextListId) => {
+    const list = await this.listsRepository.moveList(boardId, listId, prevListId, nextListId);
+
+    const currentList = await this.listsRepository.findListById(listId);
+    const prevList = await this.listsRepository.findListById(prevListId);
+    const nextList = await this.listsRepository.findListById(nextListId);
+
+    if (prevListId && nextListId) {
+      const currentListOrder = (prevList.listOrder + nextList.listOrder) / 2;
+      return {
+        boardId,
+        listId,
+        listOrder: currentListOrder,
+      }
+
+    } else if (prevListId) {
+      const prevListOrder = prevList.listOrder + 1;
+      return {
+        boardId,
+        listId,
+        listOrder: prevListOrder,
+      }
+
+    } else if (nextListId) {
+      const nextListOrder = nextList.listOrder - 1;
+      return {
+        boardId,
+        listId,
+        listOrder: nextListOrder,
+      }
+    }
+    
   }
 
   // 리스트 삭제
