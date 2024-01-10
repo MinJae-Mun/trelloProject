@@ -54,30 +54,17 @@ export class ListsService {
     const nextList = await this.listsRepository.findListById(nextListId);
 
     if (prevListId && nextListId) {
-      const currentListOrder = (prevList.listOrder + nextList.listOrder) / 2;
-      return {
-        boardId,
-        listId,
-        listOrder: currentListOrder,
-      }
-
+      const currentListOrder = (prevList.listOrder + nextList.listOrder) / 2
     } else if (prevListId) {
       const prevListOrder = prevList.listOrder + 1;
-      return {
-        boardId,
-        listId,
-        listOrder: prevListOrder,
-      }
-
     } else if (nextListId) {
       const nextListOrder = nextList.listOrder - 1;
-      return {
-        boardId,
-        listId,
-        listOrder: nextListOrder,
-      }
     }
-    
+    return {
+      boardId,
+      listId,
+      listOrder: list.listOrder,
+    }
   }
 
   // 리스트 삭제
