@@ -23,13 +23,9 @@ export default class Card extends Model {
                     type: DataTypes.STRING(255),
                     allowNull: false,
                 },
-                previousCardId: {
-                    type: DataTypes.INTEGER,
-                    allowNull: true,
-                },
-                nextCardId: {
-                    type: DataTypes.INTEGER,
-                    allowNull: true,
+                cardOrder: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
                 },
             },
             {
