@@ -4,10 +4,18 @@ const { List } = db;
 export class ListsRepository {
   // 리스트 생성
   createList = async (boardId, listName) => {
+    let num = 5;
+    const existingLists = await db.List.findAll({
+      where: {boardId}
+    });
+    console.log('보드아이디 확인', existingLists)
+    if(existingLists) {
+      num += existingLists.length;
+    }
     const newList = await db.List.create({
       boardId: +boardId,
       listName,
-      listOrder: +boardId,
+      listOrder: num,
     },
     );
 
@@ -42,14 +50,14 @@ export class ListsRepository {
 
   // 리스트 수정
   updateListName = async (listId, listName) => {
-    const list = await db.List.update({
-      where: {
-        listId: +listId,
-      },
-      data: {
+    const list = await db.List.update(
+       {
         listName,
       },
-    });
+      {where: {
+        listId: +listId,
+      }},
+    );
 
     return list;
   }
