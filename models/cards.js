@@ -21,7 +21,11 @@ export default class Card extends Model {
                 },
                 description: {
                     type: DataTypes.STRING(255),
-                    allowNull: false,
+                    allowNull: true,
+                },
+                role: {
+                    type: DataTypes.STRING(255),
+                    allowNull: true,
                 },
                 cardOrder: {
                     type: DataTypes.FLOAT,
