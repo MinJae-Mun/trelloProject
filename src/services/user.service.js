@@ -3,21 +3,21 @@ import { UsersRepository } from '../repositories/user.repository.js';
 export class UserService {
     userRepository = new UsersRepository();
 
-    getUserById = async (email) => {
-        const user = await this.userRepository.readOneByUserId(email);
+    getUserById = async (userId) => {
+        const user = await this.userRepository.readOneById(userId);
 
         return {
             ok: true,
-            message: '예약을 조회하셨습니다.',
+            message: '사용자 정보를 조회하셨습니다.',
             data: user,
         };
     };
 
-    updateUserById = async (email, body) => {
-        return await this.usersRepository.updateOneById(email, body);
+    updateUserById = async (userId, body) => {
+        return await this.userRepository.updateOneById(userId, body);
     };
 
-    deleteUserById = async (email) => {
-        return await this.usersRepository.deleteOneById(email);
+    deleteUserById = async (userId) => {
+        return await this.userRepository.deleteOneById(userId);
     };
 }

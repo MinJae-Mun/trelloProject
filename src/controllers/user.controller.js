@@ -6,13 +6,12 @@ export class UsersController {
     //유저정보조회
     readMyInfo = async (req, res, next) => {
         try {
-            const email = req.user.email;
+            const userId = req.user.userId;
 
-            const result = await this.userService.getUserById(email);
+            const result = await this.userService.getUserById(userId);
 
             return res.status(200).json(result);
         } catch (err) {
-            console.log(err);
             next(err);
         }
     };
@@ -21,15 +20,15 @@ export class UsersController {
     updateUserInfo = async (req, res, next) => {
         try {
             // session에서 email를 받아와야 함
-            const id = req.user.email;
+            const userId = req.user.userId;
             //요청한 바디정보
             const body = req.body;
             //유정정보 업데이트하기
-            await this.usersService.updateUserById(id, body);
+            await this.userService.updateUserById(userId, body);
 
             return res.status(200).json({
                 ok: true,
-                message: '유저 프로필 수정에 성공했습니다.',
+                message: '사용자 정보 수정에 성공했습니다.',
             });
         } catch (error) {
             next(error);
@@ -40,12 +39,12 @@ export class UsersController {
     deleteMyId = async (req, res, next) => {
         try {
             // session에서 email를 받아와야 함
-            const id = req.user.email;
-            await this.usersService.deleteUserById(id);
+            const userId = req.user.userId;
+            await this.userService.deleteUserById(userId);
 
             return res.status(200).json({
                 ok: true,
-                message: '내 프로필 삭제에 성공했습니다.',
+                message: '사용자 정보 삭제에 성공했습니다.',
             });
         } catch (error) {
             next(error);

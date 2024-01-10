@@ -34,7 +34,7 @@ export class AuthService {
     signin = async (signinData) => {
         const { email, password } = signinData;
 
-        const auth = await this.usersRepository.readOneByUserId(email);
+        const auth = await this.usersRepository.readOneByEmail(email);
 
         if (!auth) {
             const error = new Error('존재하지 않는 아이디입니다.');
@@ -49,8 +49,9 @@ export class AuthService {
             error.status = 403;
             throw error;
         }
+        console.log('authService', auth);
 
-        return jwt.sign({ userId: auth.id }, process.env.JWT_SECRET, {
+        return jwt.sign({ userId: auth.userId }, process.env.JWT_SECRET, {
             expiresIn: '2h',
         });
     };

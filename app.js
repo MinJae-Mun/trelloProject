@@ -10,6 +10,7 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
 import { UserRouter } from './src/routers/user.router.js';
+import { CommentRouter } from './src/routers/comment.router.js';
 import { apiRouter } from './src/routers/index.js';
 
 // 환경변수 세팅
@@ -56,7 +57,7 @@ app.use(sessionMiddleware);
 app.use('/api', apiRouter);
 
 // api 라우터
-app.use('/api', [AuthRouter, UserRouter]);
+app.use('/api', [AuthRouter, UserRouter, CommentRouter]);
 
 // app.use('/api', [CardRouter]);
 
