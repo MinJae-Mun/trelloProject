@@ -4,18 +4,14 @@ import { db } from '../../models/index.js';
 const { Board, List, Card } = db;
 export class BoardRepository {
     // # 보드 작성 API
-    createBoard = async (UserId, title, detail, backgroundColor) => {
+    createBoard = async (UserId, title, detail) => {
         let transaction;
         try {
-            transaction = await sequelize.transaction();
-
             // 보드 생성
             const boardData = await Board.create(
-                { UserId, title, detail, backgroundColor },
+                { UserId, title, detail },
                 { transaction },
             );
-
-            await transaction.commit();
 
             return boardData;
         } catch (error) {
@@ -79,26 +75,21 @@ export class BoardRepository {
 
     // # 보드 삭제 API
     deleteBoard = async (boardId) => {
-        let transaction;
         try {
-            transaction = await sequelize.transaction();
-
-            await Board.destroy({ where: { boardId }, transaction });
-            await Memberships.destroy({
-                where: { membershipId: boardId },
-                transaction,
-            });
-            await MembershipUsers.destroy({
-                where: { membershipId: boardId },
-                transaction,
-            });
-
-            await transaction.commit();
+            await Board.destroy({ where: { boardId } });
+            // await Memberships.destroy({
+            //     where: { membershipId: boardId },
+            //     transaction,
+            // });
+            // await MembershipUsers.destroy({
+            //     where: { membershipId: boardId },
+            //     transaction,
+            // });
         } catch (error) {
-            if (transaction) {
-                await transaction.rollback();
-            }
-            throw error;
+            // // if (transaction) {
+            // //     await transaction.rollback();
+            // // }
+            // throw error;
         }
     };
 }

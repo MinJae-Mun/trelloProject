@@ -9,14 +9,12 @@ export class BoardService {
             UserId,
             title,
             detail,
-            backgroundColor,
         );
         return {
             boardId: boardData.boardId,
             userId: boardData.UserId,
             title: boardData.title,
             detail: boardData.detail,
-            backgroundColor: boardData.backgroundColor,
             createdAt: boardData.createdAt,
             updatedAt: boardData.updatedAt,
         };
@@ -177,7 +175,7 @@ export class BoardService {
 
             return {
                 status: 200,
-                message: `보드 ${boardId}번 수정에 성공했습니다.`,
+                message: `보드 ${boardId}번 삭제에 성공했습니다.`,
             };
         } catch (error) {
             throw new Error(error);

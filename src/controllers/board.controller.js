@@ -5,7 +5,7 @@ export class BoardController {
 
     // # 보드 생성 API
     createBoard = async (req, res) => {
-        const { userId } = res.locals.user;
+        const { userId } = req.params;
         const { title, detail } = req.body;
         try {
             if (!title || !detail) {
@@ -56,7 +56,7 @@ export class BoardController {
 
     // # 보드 수정 API
     updateBoard = async (req, res) => {
-        const { userId } = res.locals.user;
+        const { userId } = req.params;
         const { boardId } = req.params;
         const { title, detail } = req.body;
         try {
@@ -65,7 +65,6 @@ export class BoardController {
                 boardId,
                 title,
                 detail,
-                backgroundColor,
             );
             return res.status(200).json({ message: boardUpdate });
         } catch (error) {
@@ -75,7 +74,7 @@ export class BoardController {
 
     // # 보드 삭제 API
     deleteBoard = async (req, res) => {
-        const { userId } = res.locals.user;
+        const { userId } = req.params;
         const { boardId } = req.params;
         try {
             const boardDelete = await this.boardService.deleteBoard(
