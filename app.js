@@ -9,6 +9,8 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
+// import { UsersRouter } from './src/routers/user.router.js';
+import { BoardRouter } from './src/routers/board.router.js';
 import { apiRouter } from './src/routers/index.js';
 
 // 환경변수 세팅
@@ -16,7 +18,6 @@ dotenv.config();
 
 // express
 const app = express();
-
 // ES6 모듈 __dirname 에러 방지
 const __dirname = path.resolve();
 
@@ -55,10 +56,9 @@ app.use(sessionMiddleware);
 app.use('/api', apiRouter);
 
 // api 라우터
-app.use('/api', [AuthRouter]);
+app.use('/api', [AuthRouter, BoardRouter]);
 
 // app.use('/api', [CardRouter]);
-
 
 // 에러 핸들링 미들웨어
 app.use(errorMiddleware);
