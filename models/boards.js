@@ -1,7 +1,7 @@
+'use strict';
 import { Model, DataTypes } from 'sequelize';
 
 export default class Board extends Model {
-    // 해당 모델의 정보를 초기화 하는 정적 메서드
     static init(sequelize) {
         return super.init(
             {
@@ -29,7 +29,6 @@ export default class Board extends Model {
             },
         );
     }
-
     // 해당 모델의 관계를 정의하는 정적 메서드
     static associate(db) {
         db.Board.hasMany(db.BoardMember, {
