@@ -59,13 +59,13 @@ export class CardService {
 
     //카드 이동
     moveCard = async (boardId, listId, prev, next) => {
-const 
+//const 
 
     };
 
     // 카드 삭제
     deleteCard = async (cardId) => {
-        const card = await this.cardsRepository.findCardById(cardId);
+        const card = await this.cardRepository.findCardById(cardId);
 
         if (!card) throw new Error('카드가 존재하지 않습니다.');
 

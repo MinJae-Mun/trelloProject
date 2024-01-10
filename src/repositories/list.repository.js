@@ -29,7 +29,7 @@ export class ListsRepository {
   getAllLists = async (boardId) => {
     const allLists = await db.List.findAll({
       attributes: ['listName'],
-      order: [['listOrder', 'DESC']], // listOrder로 
+      order: [['listOrder']], // listOrder로 
       include: [{model: Card, as: 'cards',attributes: ['title'],}],
       where: {
         boardId
@@ -74,34 +74,48 @@ export class ListsRepository {
   // 리스트 이동
   moveList = async (boardId, listId, listOrder) => {
 
-    // 현재 보드의 리스트 findAll
-    const allLists = await db.List.findAll({
-      where: { boardId }
-    });
+    // // 현재 보드의 리스트 findAll
+    // const allLists = await db.List.findAll({
+    //   where: { boardId }
+    // });
 
-    // 리스트 이동 실행 조건 (map)
-    // 리스트가 2개 이상일떄
-    if (allLists.length >= 2) {
+    // // 리스트 이동 실행 조건 (map)
+    // // 리스트가 2개 이상일떄
+    // if (allLists.length >= 2) {
 
-      //1. 맨 엎으로 이동 할 경우 가장 작은 listOrder의 값에 2로 나누어 수정
-      // 가장 작은 리스트의 listOrder 찾기
-      const minListOrder = Math.min(...allLists.map(list => list.listOrder));
+    //   //1. 맨 엎으로 이동 할 경우 가장 작은 listOrder의 값에 2로 나누어 수정
+    //   // 가장 작은 리스트의 listOrder 찾기
+    //   const minListOrder = Math.min(...allLists.map(list => list.listOrder));
 
-      listOrder = minListOrder / 2;
+    //   listOrder = minListOrder / 2;
 
-      const moveListForefront = await db.List.update(
-        {
-          listOrder,
-        },
-        {
-          where: {
-            listId: +listId,
+    //   const moveListForefront = await db.List.update(
+    //     {
+    //       listOrder,
+    //     },
+    //     {
+    //       where: {
+    //         listId: +listId,
+    //       }
+    //     }
+    //   )
+
+    //   return moveListForefront;
+    // }
+
+
+    const moveList = await db.List.update(
+          {
+            listOrder,
+          },
+          {
+            where: {
+              listId: +listId,
+            }
           }
-        }
-      )
-
-      return moveListForefront;
-    }
+        )
+  
+        return moveList;
 
   };
 

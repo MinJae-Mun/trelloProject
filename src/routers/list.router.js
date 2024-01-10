@@ -17,7 +17,7 @@ listsRouter.get('/:boardId', isAuth, listsController.getAllLists);
 //수정 
 listsRouter.put('/:boardId/:listId', isAuth, listsController.updateListName);
 
-// 리스트 이동
+// 리스트 이동 엔드포인트 확인 필요
 listsRouter.put('/:boardId/:listId/:listOrder/move', isAuth, listsController.moveList);
 
 
