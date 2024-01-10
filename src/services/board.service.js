@@ -1,6 +1,6 @@
-const BoardRepository = require('../repositories/board.repository');
+import { BoardRepository } from '../repositories/board.repository.js';
 
-class BoardService {
+export class BoardService {
     boardRepository = new BoardRepository();
 
     // # 보드 생성 API
@@ -184,4 +184,4 @@ class BoardService {
         }
     };
 }
-module.exports = BoardService;
+// module.exports = BoardService;

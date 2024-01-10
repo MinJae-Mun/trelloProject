@@ -1,65 +1,45 @@
 'use strict';
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-    class Boards extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models) {
-            // Users : Boards (1:N)
-            this.belongsTo(models.Users, {
-                targetKey: 'userId',
-                foreignKey: 'UserId',
-            });
-            // Boards : Lists (1:N)
-            this.hasMany(models.Lists, {
-                sourceKey: 'boardId',
-                foreignKey: 'BoardId',
-            });
-            // Memberships : Boards (1:N)
-            // this.belongsTo(models.Memberships, {
-            //   sourceKey: 'boardId',
-            //   foreignKey: 'BoardId',
-            // });
-        }
+import { Model, DataTypes } from 'sequelize';
+
+export default class Board extends Model {
+    static init(sequelize) {
+        return super.init(
+            {
+                boardId: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                    primaryKey: true,
+                    autoIncrement: true,
+                },
+                title: {
+                    type: DataTypes.STRING(255),
+                    allowNull: false,
+                },
+            },
+            {
+                // 테이블에 추가적인 설정
+                sequelize,
+                timestamps: true,
+                underscored: false,
+                modelName: 'Board',
+                tableName: 'boards',
+                paranoid: true,
+                charset: 'utf8',
+                collate: 'utf8_general_ci',
+            },
+        );
     }
-    Boards.init(
-        {
-            boardId: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: DataTypes.INTEGER,
-            },
-            UserId: {
-                allowNull: false, // NOT NULL
-                type: DataTypes.INTEGER,
-            },
-            title: {
-                allowNull: false, // NOT NULL
-                type: DataTypes.STRING,
-            },
-            desc: {
-                allowNull: false, // NOT NULL
-                type: DataTypes.STRING,
-            },
-            createdAt: {
-                allowNull: false, // NOT NULL
-                type: DataTypes.DATE,
-                defaultValue: DataTypes.NOW,
-            },
-            updatedAt: {
-                allowNull: false, // NOT NULL
-                type: DataTypes.DATE,
-                defaultValue: DataTypes.NOW,
-            },
-        },
-        {
-            sequelize,
-            modelName: 'Boards',
-        },
-    );
-    return Boards;
-};
+    // 해당 모델의 관계를 정의하는 정적 메서드
+    static associate(db) {
+        db.Board.hasMany(db.BoardMember, {
+            as: 'boards',
+            foreignKey: 'boardId',
+            sourceKey: 'boardId',
+        });
+        db.Board.hasMany(db.List, {
+            as: 'lists',
+            foreignKey: 'boardId',
+            sourceKey: 'boardId',
+        });
+    }
+}

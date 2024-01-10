@@ -1,6 +1,6 @@
-const BoardService = require('../services/board.service');
+import { BoardService } from '../services/board.service.js';
 
-class BoardController {
+export class BoardController {
     boardService = new BoardService();
 
     // # 보드 생성 API
@@ -88,4 +88,4 @@ class BoardController {
         }
     };
 }
-module.exports = BoardController;
+// module.exports = BoardController;

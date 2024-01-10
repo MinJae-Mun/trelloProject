@@ -1,7 +1,8 @@
-const { Boards, Lists } = require('../../models/boards');
-const sequelize = Lists.sequelize;
+import { db } from '../../models/index.js';
+// import { Sequelize } from 'sequelize';
 
-class BoardRepository {
+const { Board, List, Card } = db;
+export class BoardRepository {
     // # 보드 작성 API
     createBoard = async (UserId, title, detail, backgroundColor) => {
         let transaction;
@@ -9,7 +10,7 @@ class BoardRepository {
             transaction = await sequelize.transaction();
 
             // 보드 생성
-            const boardData = await Boards.create(
+            const boardData = await Board.create(
                 { UserId, title, detail, backgroundColor },
                 { transaction },
             );
@@ -27,7 +28,7 @@ class BoardRepository {
 
     // # 보드 조회 API
     getBoard = async () => {
-        return await Boards.findAll({});
+        return await Board.findAll({});
     };
 
     //  보드 접근 권한 조회
@@ -46,8 +47,8 @@ class BoardRepository {
 
     // # 보드 id로 조회
     findOneBoard = async (boardId) => {
-        const board = await Boards.findOne({ where: { boardId: boardId } });
-        const lists = await Lists.findAll({ where: { BoardId: boardId } });
+        const board = await Board.findOne({ where: { boardId: boardId } });
+        const lists = await List.findAll({ where: { BoardId: boardId } });
 
         return {
             board,
@@ -57,12 +58,12 @@ class BoardRepository {
 
     // # 수정, 삭제, 초대에 필요한 id 조회
     findBoard = async (boardId) => {
-        return await Boards.findByPk(boardId);
+        return await Board.findByPk(boardId);
     };
 
     // # 수정, 삭제, 초대에 필요한 id 조회
     findBoard = async (boardId) => {
-        return await Boards.findByPk(boardId);
+        return await Board.findByPk(boardId);
     };
 
     // # 보드 수정 API
@@ -70,7 +71,7 @@ class BoardRepository {
         const updateValues = {};
         if (title) updateValues.title = title;
         if (detail) updateValues.detail = detail;
-        const updateBoard = await Boards.update(updateValues, {
+        const updateBoard = await Board.update(updateValues, {
             where: { boardId },
         });
         return updateBoard;
@@ -82,7 +83,7 @@ class BoardRepository {
         try {
             transaction = await sequelize.transaction();
 
-            await Boards.destroy({ where: { boardId }, transaction });
+            await Board.destroy({ where: { boardId }, transaction });
             await Memberships.destroy({
                 where: { membershipId: boardId },
                 transaction,
@@ -102,4 +103,4 @@ class BoardRepository {
     };
 }
 
-module.exports = BoardRepository;
+// module.exports = BoardRepository;

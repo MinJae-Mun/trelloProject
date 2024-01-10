@@ -9,7 +9,7 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
-import { UsersRouter } from './src/routers/user.router.js';
+// import { UsersRouter } from './src/routers/user.router.js';
 import { BoardRouter } from './src/routers/board.router.js';
 import { apiRouter } from './src/routers/index.js';
 
@@ -56,7 +56,7 @@ app.use(sessionMiddleware);
 app.use('/api', apiRouter);
 
 // api 라우터
-app.use('/api', [AuthRouter, UsersRouter, BoardRouter]);
+app.use('/api', [AuthRouter, BoardRouter]);
 
 // app.use('/api', [CardRouter]);
 
