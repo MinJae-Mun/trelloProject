@@ -10,13 +10,13 @@ import { errorMiddleware } from './middlewares/errorMiddleware.js';
 import { db } from './models/index.js';
 import { AuthRouter } from './src/routers/auth.router.js';
 import { UsersRouter } from './src/routers/user.router.js';
+import { BoardRouter } from './src/routers/board.router.js';
 
 // 환경변수 세팅
 dotenv.config();
 
 // express
 const app = express();
-
 // ES6 모듈 __dirname 에러 방지
 const __dirname = path.resolve();
 
@@ -54,7 +54,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 
 // api 라우터
-app.use('/api', [AuthRouter, UsersRouter]);
+app.use('/api', [AuthRouter, UsersRouter, BoardRouter]);
 
 // app.use('/api', [CardRouter]);
 
