@@ -1,4 +1,4 @@
-const { Boards, Lists } = require('../models/boards');
+const { Boards, Lists } = require('../../models/boards');
 const sequelize = Lists.sequelize;
 
 class BoardRepository {
