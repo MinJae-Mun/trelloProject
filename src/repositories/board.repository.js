@@ -28,10 +28,10 @@ export class BoardRepository {
     };
 
     //  보드 접근 권한 조회
-    boardAuth = async (boardId, userId) => {
+    boardAuth = async (boardId) => {
         try {
-            const haveAuth = await MembershipUsers.findOne({
-                where: { UserId: userId, MembershipId: boardId },
+            const haveAuth = await Board.findOne({
+                where: { MembershipId: boardId },
                 attributes: ['UserId'],
             });
             console.log('haveAuth :', typeof haveAuth, haveAuth);
@@ -86,6 +86,7 @@ export class BoardRepository {
             //     transaction,
             // });
         } catch (error) {
+            next(error);
             // // if (transaction) {
             // //     await transaction.rollback();
             // // }

@@ -58,7 +58,7 @@ export class ListsService {
     } else if (prevListId) {
       const prevListOrder = prevList.listOrder + 1;
     } else if (nextListId) {
-      const nextListOrder = nextList.listOrder - 1;
+      const nextListOrder = nextList.listOrder / 2;
     }
     return {
       boardId,

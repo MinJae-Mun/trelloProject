@@ -26,7 +26,7 @@ export class BoardService {
     };
 
     // 보드 번호로 조회 API
-    findOneBoard = async (boardId, userId) => {
+    findOneBoard = async (boardId) => {
         if (!boardId) {
             throw new Error('보드 번호를 입력해주세요.');
         }
@@ -34,7 +34,6 @@ export class BoardService {
         try {
             const haveAuthResult = await this.boardRepository.boardAuth(
                 boardId,
-                userId,
             );
 
             if (haveAuthResult === null) {
@@ -44,12 +43,12 @@ export class BoardService {
                 };
             }
 
-            if (haveAuthResult.UserId !== userId) {
-                return {
-                    status: 400,
-                    message: `보드 ${boardId}번에 접근 권한이 없습니다.`,
-                };
-            }
+            // if (haveAuthResult.UserId !== userId) {
+            //     return {
+            //         status: 400,
+            //         message: `보드 ${boardId}번에 접근 권한이 없습니다.`,
+            //     };
+            // }
 
             const { board, lists } = await this.boardRepository.findOneBoard(
                 boardId,
